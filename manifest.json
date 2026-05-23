@@ -1,0 +1,26 @@
+{
+  "name": "Месечни разходи",
+  "short_name": "Разходи",
+  "description": "Личен тракер за месечни разходи",
+  "lang": "bg",
+  "start_url": "./mesechni_razhodi.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F3EC",
+  "theme_color": "#F7F3EC",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
