@@ -106,6 +106,19 @@
   .ti-drag-vertical::before { content: "drag_indicator"; }
   .ti-notes::before { content: "sticky_note_2"; }
   .ti-undo::before { content: "undo"; }
+  .ti-cottage::before { content: "cottage"; }
+  .ti-apartment::before { content: "apartment"; }
+  .ti-bed::before { content: "bed"; }
+  .ti-restaurant::before { content: "restaurant"; }
+  .ti-school::before { content: "school"; }
+  .ti-baby::before { content: "child_care"; }
+  .ti-receipt::before { content: "receipt"; }
+  .ti-fitness::before { content: "fitness_center"; }
+  .ti-book::before { content: "menu_book"; }
+  .ti-calculator::before { content: "calculate"; }
+  .ti-wallet::before { content: "wallet"; }
+  .ti-wifi::before { content: "wifi"; }
+  .ti-tv::before { content: "tv"; }
 
   /* === Layout === */
   .app { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
@@ -192,11 +205,77 @@
   }
   .add-form button:hover { opacity: 0.85; }
   .add-form button:active { transform: scale(0.97); }
-  .add-note { grid-column: 1 / -1; }
+  .add-form .add-date {
+    grid-column: 1 / 2;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-2);
+  }
+  .add-form .add-note { grid-column: 2 / 4; }
 
   /* === Obligations === */
   .obligations-section { margin-bottom: 32px; }
-  .obligations-list { display: grid; gap: 8px; }
+  .obligations-header {
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .obligations-header:hover { background: var(--bg); }
+  .obligations-section.has-alert .obligations-header {
+    border-color: rgba(184, 92, 56, 0.35);
+    background: rgba(184, 92, 56, 0.04);
+  }
+  .obligations-section.has-alert .obligations-header:hover {
+    background: rgba(184, 92, 56, 0.07);
+  }
+  .ob-header-left {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+  .ob-header-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .ob-header-summary {
+    font-size: 12px;
+    color: var(--text-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+  .ob-summary-paid { color: var(--text-2); }
+  .ob-summary-overdue {
+    color: #B85C38;
+    font-weight: 500;
+  }
+  .ob-summary-amount {
+    color: var(--text-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .ob-header-toggle {
+    color: var(--text-3);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .obligations-section:not(.collapsed) .ob-header-toggle { transform: rotate(180deg); }
+  .obligations-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
   .obligation {
     display: grid; grid-template-columns: 28px 1fr auto 22px;
     gap: 12px; align-items: center; padding: 12px 14px;
@@ -344,7 +423,229 @@
   }
   .edit-actions button:hover { opacity: 0.85; }
 
-  /* === Settings panel === */
+  /* === Add form tabs (Месечни / Дневни) === */
+  .add-tabs {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 12px;
+    gap: 4px;
+  }
+  .add-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-3);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .add-tab:hover { color: var(--text-2); }
+  .add-tab.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(43, 38, 32, 0.06);
+  }
+
+  /* === Day groups in Records === */
+  .day-group { margin-bottom: 12px; }
+  .day-header {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto 20px;
+    gap: 10px;
+    align-items: baseline;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .day-header:hover { background: var(--bg); }
+  .day-label {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .day-date {
+    font-size: 12px;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .day-count {
+    font-size: 11px;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .day-total {
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .day-toggle {
+    color: var(--text-3);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .day-group.expanded .day-toggle { transform: rotate(180deg); }
+  .day-items { padding: 4px 12px 8px; }
+  .day-entry {
+    display: grid;
+    grid-template-columns: 28px 1fr auto 28px 28px;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .day-entry:last-child { border-bottom: none; }
+  .day-entry > .entry-icon {
+    display: flex;
+    color: var(--cat-color);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+  .day-entry .entry-cat-line { font-size: 14px; color: var(--text); }
+  .day-items .entry.editing {
+    grid-template-columns: 1fr;
+    padding: 12px 0;
+  }
+  @media (max-width: 540px) {
+    .day-header { grid-template-columns: auto auto 1fr auto 20px; gap: 8px; }
+    .day-entry { grid-template-columns: 24px 1fr auto 28px 28px; gap: 8px; }
+  }
+
+  .cat-section { margin-bottom: 14px; }
+  .cat-section-header {
+    display: grid;
+    grid-template-columns: 1fr auto 20px;
+    gap: 10px; align-items: center;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .cat-section-header:hover { background: var(--bg); }
+  .cat-section-label {
+    font-family: 'Fraunces', serif;
+    font-size: 14px; color: var(--text);
+  }
+  .cat-section-count {
+    font-size: 11px; color: var(--text-3);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+  .cat-section-toggle {
+    color: var(--text-3); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .cat-section.expanded .cat-section-toggle { transform: rotate(180deg); }
+  .cat-section-content { margin-top: 8px; }
+
+  /* Inline icon+color editor for existing custom categories */
+  .cat-row-icon-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    width: 30px; height: 30px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cat-color);
+    font-size: 18px;
+    transition: all 0.15s;
+    padding: 0;
+  }
+  .cat-row-icon-btn:hover {
+    background: var(--bg);
+    border-color: var(--border-soft);
+  }
+  .cat-row-icon-btn.active {
+    background: var(--bg);
+    border-color: var(--cat-color);
+  }
+  .cat-style-editor {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: -2px;
+    display: grid;
+    gap: 12px;
+  }
+  .cat-style-editor .editor-section-label {
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .cat-style-editor .icon-grid {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .cat-style-editor .icon-opt {
+    width: 32px; height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    color: var(--text-2);
+    transition: all 0.12s;
+    padding: 0;
+  }
+  .cat-style-editor .icon-opt:hover { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .cat-style-editor .icon-opt.active {
+    background: var(--cat-active);
+    color: white;
+    border-color: var(--cat-active);
+  }
+  .cat-style-editor .color-grid {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .cat-style-editor .color-opt {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: var(--c);
+    cursor: pointer;
+    transition: all 0.15s;
+    padding: 0;
+  }
+  .cat-style-editor .color-opt:hover { transform: scale(1.12); }
+  .cat-style-editor .color-opt.active {
+    border-color: var(--text);
+    transform: scale(1.05);
+  }
+  .cat-style-editor .editor-done-btn {
+    justify-self: end;
+    padding: 8px 16px;
+    background: var(--text); color: var(--bg);
+    border: none; border-radius: 6px;
+    font-family: inherit; font-size: 13px;
+    cursor: pointer;
+  }
+  .cat-style-editor .editor-done-btn:hover { opacity: 0.85; }
+
   .settings-panel { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); }
   .settings-panel[hidden] { display: none; }
   .settings-h {
@@ -366,6 +667,22 @@
     display: grid; grid-template-columns: 18px 28px 1fr 50px 60px 28px;
     gap: 8px; align-items: center;
   }
+  .settings-row.settings-row-daily {
+    grid-template-columns: 18px 28px 1fr 28px 28px;
+  }
+  .row-promote {
+    background: transparent;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    width: 28px; height: 28px;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-3);
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .row-promote:hover { color: var(--text); border-color: var(--border); background: var(--bg); }
   .settings-row.confirming {
     grid-template-columns: 18px 28px 1fr auto;
     background: rgba(184, 92, 56, 0.06);
@@ -454,6 +771,44 @@
   }
   .new-cat-h { font-size: 13px; color: var(--text-2); font-weight: 500; margin-bottom: 12px; }
   .new-cat-form { display: grid; gap: 14px; }
+  .new-cat-type-row {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .type-radio {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    font-size: 13px; color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .type-radio:hover { color: var(--text); border-color: var(--border); }
+  .type-radio.selected {
+    background: var(--surface);
+    border-color: var(--cat-active, var(--text));
+    color: var(--text);
+  }
+  .type-radio input[type="radio"] {
+    accent-color: var(--text);
+    margin: 0;
+  }
+  .new-cat-day {
+    width: 70px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    font-family: inherit; font-size: 14px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none; appearance: none;
+  }
+  .new-cat-day:focus { border-color: var(--accent); }
   .cat-preview {
     display: grid; grid-template-columns: 32px 1fr;
     gap: 12px; align-items: center;
@@ -577,10 +932,13 @@
     .month-nav h2 { font-size: 19px; min-width: 0; }
     .add-form { grid-template-columns: 1fr 1fr; }
     .add-form button { grid-column: 1 / -1; }
+    .add-form .add-date { grid-column: 1 / 2; }
+    .add-form .add-note { grid-column: 1 / -1; }
     .entry-group-items { padding-left: 24px; }
     .entry { grid-template-columns: 1fr auto 28px 28px; gap: 8px; }
     .entry-date { display: none; }
     .settings-row { grid-template-columns: 18px 24px 1fr 44px 50px 26px; gap: 6px; }
+    .settings-row.settings-row-daily { grid-template-columns: 18px 24px 1fr 26px 26px; gap: 6px; }
     .settings-col-labels { grid-template-columns: 18px 24px 1fr 44px 50px 26px; gap: 6px; }
   }
 </style>
@@ -606,11 +964,26 @@ if ('serviceWorker' in navigator) {
 const MONTHS_BG = ['Януари','Февруари','Март','Април','Май','Юни','Юли','Август','Септември','Октомври','Ноември','Декември'];
 
 const ICON_OPTIONS = [
-  'ti-coffee','ti-shopping-bag','ti-pill','ti-heart',
-  'ti-plant','ti-paw','ti-gift','ti-briefcase',
-  'ti-bus','ti-car','ti-plane','ti-music',
-  'ti-tools','ti-scissors','ti-flame','ti-cigarette',
-  'ti-piggy-bank','ti-credit-card','ti-medical-cross','ti-tag'
+  // Храна и пазаруване
+  'ti-coffee','ti-restaurant','ti-shopping-cart','ti-shopping-bag',
+  // Дом и сметки
+  'ti-home','ti-cottage','ti-apartment','ti-bed','ti-bolt','ti-droplet','ti-wifi','ti-flame',
+  // Транспорт
+  'ti-car','ti-gas-station','ti-bus','ti-plane',
+  // Техника и финанси
+  'ti-device-mobile','ti-cpu','ti-credit-card','ti-wallet','ti-piggy-bank','ti-calculator',
+  // Здраве
+  'ti-pill','ti-medical-cross','ti-heart','ti-fitness',
+  // Работа и обучение
+  'ti-briefcase','ti-school','ti-book','ti-receipt',
+  // Дрехи и лично
+  'ti-shirt','ti-scissors','ti-cigarette',
+  // Забавления
+  'ti-music','ti-tv','ti-confetti','ti-gift',
+  // Семейство и живот
+  'ti-baby','ti-paw','ti-plant',
+  // Друго
+  'ti-tools','ti-tag'
 ];
 
 const COLOR_OPTIONS = [
@@ -644,7 +1017,11 @@ const Storage = {
   async get(key) {
     if (typeof window.storage !== 'undefined') {
       try {
-        const r = await window.storage.get(key);
+        // Race against a 3 second timeout in case storage is hanging
+        const r = await Promise.race([
+          window.storage.get(key),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('storage timeout')), 3000))
+        ]);
         return r ? JSON.parse(r.value) : null;
       } catch (e) { return null; }
     }
@@ -684,6 +1061,8 @@ const state = {
   customCategories: [],      // [{id, label, icon, color, type}]
   categoryTypes: {},         // { id: {type, deadline, expected} }
   categoryOrder: [],         // [id, ...]
+  categoryStyles: {},        // { id: {icon?, color?} } — overrides for ANY category, incl. defaults
+  deletedDefaults: new Set(),// default category ids that have been deleted
 
   // UI (in-memory)
   view: { year: 0, month: 0 },
@@ -698,21 +1077,35 @@ const state = {
   newCatIcon: ICON_OPTIONS[0],
   newCatColor: COLOR_OPTIONS[0],
   newCatName: '',
-  sortable: null
+  newCatType: 'daily',       // 'daily' | 'monthly' — selected at creation
+  newCatDay: '',             // day of month for monthly type
+  addFilter: 'daily',        // 'daily' | 'monthly' — which group's categories show in add form
+  expandedDays: new Set(),   // 'YYYY-MM-DD' keys
+  collapsedSettingsSections: new Set(),  // 'monthly' | 'daily'
+  stylingCatId: null,        // category id whose icon/color editor is currently open
+  obligationsCollapsed: false,  // is the Monthly Obligations card collapsed?
+  sortableInstances: []      // SortableJS instances (one per category section)
 };
 
 // ============================================================
 // DERIVED — never mutates state, computes fresh each call
 // ============================================================
 function getCategories() {
-  const base = [...DEFAULTS, ...state.customCategories];
+  const defaults = DEFAULTS.filter(c => !state.deletedDefaults.has(c.id));
+  const base = [...defaults, ...state.customCategories];
   // Apply label overrides
   const withLabels = base.map(c => {
     if (state.customLabels[c.id]) return { ...c, label: state.customLabels[c.id] };
     return { ...c };
   });
+  // Apply icon/color style overrides
+  const withStyles = withLabels.map(c => {
+    const style = state.categoryStyles[c.id];
+    if (style) return { ...c, icon: style.icon || c.icon, color: style.color || c.color };
+    return c;
+  });
   // Apply type/deadline/expected overrides
-  const withTypes = withLabels.map(c => {
+  const withTypes = withStyles.map(c => {
     const ov = state.categoryTypes[c.id];
     if (ov) return { ...c, type: ov.type ?? c.type, deadline: ov.deadline ?? c.deadline, expected: ov.expected };
     return c;
@@ -764,6 +1157,25 @@ const $ = id => document.getElementById(id);
 const pluralEntries = n => n === 1 ? '1 запис' : n + ' записа';
 const pluralDays = n => n === 1 ? 'ден' : 'дни';
 
+const DAYS_BG = ['Неделя','Понеделник','Вторник','Сряда','Четвъртък','Петък','Събота'];
+function dayKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function dayLabel(key) {
+  const now = new Date();
+  const todayK = dayKey(now);
+  const y = new Date(now); y.setDate(y.getDate() - 1);
+  const yesterdayK = dayKey(y);
+  if (key === todayK) return 'ДНЕС';
+  if (key === yesterdayK) return 'Вчера';
+  const [yr, m, d] = key.split('-').map(Number);
+  return DAYS_BG[new Date(yr, m-1, d).getDay()];
+}
+function dayKeyToDDMM(key) {
+  const [, m, d] = key.split('-');
+  return `${parseInt(d,10)}.${m}`;
+}
+
 // ============================================================
 // VIEWS — pure functions, return HTML strings
 // ============================================================
@@ -804,17 +1216,63 @@ function viewTotal(s) {
 
 function viewAddForm(s) {
   const cats = getCategories();
-  const options = cats.map(c => `<option value="${c.id}">${escapeHtml(c.label)}</option>`).join('');
+  const filtered = cats.filter(c => s.addFilter === 'monthly' ? c.type === 'monthly' : c.type !== 'monthly');
+  const options = filtered.length
+    ? filtered.map(c => `<option value="${c.id}">${escapeHtml(c.label)}</option>`).join('')
+    : '<option value="" disabled>Няма категории в тази група</option>';
+  const todayStr = new Date().toISOString().slice(0, 10);
   return `
     <div class="add-card">
+      <div class="add-tabs">
+        <button class="add-tab${s.addFilter === 'monthly' ? ' active' : ''}" data-action="set-filter" data-filter="monthly">Месечни</button>
+        <button class="add-tab${s.addFilter === 'daily' ? ' active' : ''}" data-action="set-filter" data-filter="daily">Дневни</button>
+      </div>
       <div class="add-form">
         <input type="number" id="add-amount" placeholder="Сума" step="0.01" min="0" inputmode="decimal" data-keep-focus="add-amount">
         <select id="add-category" data-keep-focus="add-category">${options}</select>
         <button data-action="add">Добави</button>
+        <input type="date" id="add-date" class="add-date" value="${todayStr}" title="Дата на разхода (по подразбиране днес)" data-keep-focus="add-date">
         <input type="text" id="add-note" placeholder="Бележка (по избор)" class="add-note" maxlength="100" data-keep-focus="add-note">
       </div>
     </div>
   `;
+}
+
+function viewCatStyleEditor(cat) {
+  const iconGrid = ICON_OPTIONS.map(ic => `
+    <button class="icon-opt${ic === cat.icon ? ' active' : ''}" data-action="set-cat-icon" data-cat="${cat.id}" data-icon="${ic}" style="--cat-active: ${cat.color}">
+      <i class="ti ${ic}"></i>
+    </button>
+  `).join('');
+  const colorGrid = COLOR_OPTIONS.map(c => `
+    <button class="color-opt${c === cat.color ? ' active' : ''}" data-action="set-cat-color" data-cat="${cat.id}" data-color="${c}" style="--c: ${c}"></button>
+  `).join('');
+  return `
+    <div class="cat-style-editor">
+      <div>
+        <div class="editor-section-label">Иконка</div>
+        <div class="icon-grid">${iconGrid}</div>
+      </div>
+      <div>
+        <div class="editor-section-label">Цвят</div>
+        <div class="color-grid">${colorGrid}</div>
+      </div>
+      <button class="editor-done-btn" data-action="close-style-edit"><i class="ti ti-check"></i> Готово</button>
+    </div>
+  `;
+}
+
+function categoryOptionsGrouped(selectedId) {
+  const cats = getCategories();
+  const monthlyCats = cats.filter(c => c.type === 'monthly');
+  const dailyCats = cats.filter(c => c.type !== 'monthly');
+  const renderGroup = (label, list) => {
+    if (!list.length) return '';
+    return `<optgroup label="${label}">${
+      list.map(c => `<option value="${c.id}"${c.id === selectedId ? ' selected' : ''}>${escapeHtml(c.label)}</option>`).join('')
+    }</optgroup>`;
+  };
+  return renderGroup('Месечни', monthlyCats) + renderGroup('Дневни', dailyCats);
 }
 
 function viewObligations(s) {
@@ -824,15 +1282,26 @@ function viewObligations(s) {
   const monthlyExp = viewedMonthExpenses();
   const today = isViewingCurrentMonth() ? new Date().getDate() : null;
 
-  const sorted = cats.slice().sort((a, b) => (a.deadline || 32) - (b.deadline || 32));
+  // Use the same order as in settings (already applied via categoryOrder in getCategories)
+  const sorted = cats;
 
   let paidCount = 0;
+  let overdueCount = 0;
+  let unpaidTotal = 0;
   const rows = sorted.map(cat => {
     const payments = monthlyExp.filter(e => e.category === cat.id);
     const isPaid = payments.length > 0;
     if (isPaid) paidCount++;
     const paidTotal = payments.reduce((sum, e) => sum + e.amount, 0);
     const expected = typeof cat.expected === 'number' ? cat.expected : null;
+
+    // Count overdue/unpaid for summary
+    if (!isPaid && today !== null && cat.deadline && today > cat.deadline) {
+      overdueCount++;
+      if (expected !== null) unpaidTotal += expected;
+    } else if (!isPaid && expected !== null) {
+      unpaidTotal += expected;
+    }
 
     let status = 'pending', statusText = '', statusIcon = 'ti-clock', amountText = '';
 
@@ -921,13 +1390,27 @@ function viewObligations(s) {
     `;
   }).join('');
 
+  const collapsed = s.obligationsCollapsed;
+  const summaryParts = [];
+  summaryParts.push(`<span class="ob-summary-paid">${paidCount} от ${sorted.length} платени</span>`);
+  if (overdueCount > 0) {
+    summaryParts.push(`<span class="ob-summary-overdue">${overdueCount} ${overdueCount === 1 ? 'просрочено' : 'просрочени'}</span>`);
+  }
+  if (unpaidTotal > 0) {
+    summaryParts.push(`<span class="ob-summary-amount">${fmt(unpaidTotal)} € неплатени</span>`);
+  }
+  const hasAlert = overdueCount > 0;
+
   return `
-    <div class="obligations-section">
-      <div class="section-h">
-        Месечни задължения
-        <span class="count">${paidCount} от ${sorted.length}</span>
+    <div class="obligations-section${collapsed ? ' collapsed' : ''}${hasAlert ? ' has-alert' : ''}">
+      <div class="obligations-header" data-action="toggle-obligations">
+        <div class="ob-header-left">
+          <div class="ob-header-title">Месечни задължения</div>
+          <div class="ob-header-summary">${summaryParts.join(' · ')}</div>
+        </div>
+        <div class="ob-header-toggle"><i class="ti ti-chevron-down"></i></div>
       </div>
-      <div class="obligations-list">${rows}</div>
+      ${!collapsed ? `<div class="obligations-list">${rows}</div>` : ''}
     </div>
   `;
 }
@@ -936,33 +1419,53 @@ function viewEntries(s) {
   const monthly = viewedMonthExpenses();
   if (!monthly.length) {
     return `
-      <div class="section-h">Записи <span class="count"></span></div>
+      <div class="section-h" style="margin-top: 36px;">Записи <span class="count"></span></div>
       <div class="empty"><i class="ti ti-notes"></i>Все още няма записи за този месец</div>
     `;
   }
 
-  const byCat = {};
-  monthly.forEach(e => { (byCat[e.category] = byCat[e.category] || []).push(e); });
+  const cats = getCategories();
+  const catById = Object.fromEntries(cats.map(c => [c.id, c]));
 
-  const groups = getCategories().filter(c => byCat[c.id]).map(cat => {
-    const entries = byCat[cat.id].slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Group entries by day
+  const byDay = {};
+  monthly.forEach(e => {
+    const k = dayKey(new Date(e.date));
+    (byDay[k] = byDay[k] || []).push(e);
+  });
+  const days = Object.keys(byDay).sort().reverse();
+
+  const daysHtml = days.map(k => {
+    const entries = byDay[k].slice().sort((a, b) => new Date(b.date) - new Date(a.date));
     const total = entries.reduce((sum, e) => sum + e.amount, 0);
-    const editingInObligation = cat.type === 'monthly' && s.expandedObligation === cat.id && entries.some(e => e.id === s.editingId);
+
+    // Auto-expand if editing here AND not in obligation
+    const editingInObligation = entries.some(e => {
+      if (e.id !== s.editingId) return false;
+      const cat = catById[e.category];
+      return cat && cat.type === 'monthly' && s.expandedObligation === cat.id;
+    });
     const hasEditing = entries.some(e => e.id === s.editingId) && !editingInObligation;
-    const isExpanded = s.expandedGroups.has(cat.id) || hasEditing;
+    const isExpanded = s.expandedDays.has(k) || hasEditing;
 
     return `
-      <div class="entry-group${isExpanded ? ' expanded' : ''}">
-        <div class="entry-group-header" data-action="toggle-group" data-cat="${cat.id}" style="--cat-color: ${cat.color}">
-          <div class="eg-icon"><i class="ti ${cat.icon}"></i></div>
-          <div class="eg-name">${escapeHtml(cat.label)}</div>
-          <div class="eg-count">${entries.length}</div>
-          <div class="eg-total">${fmt(total)} €</div>
-          <div class="eg-toggle"><i class="ti ti-chevron-down"></i></div>
+      <div class="day-group${isExpanded ? ' expanded' : ''}">
+        <div class="day-header" data-action="toggle-day" data-day="${k}">
+          <div class="day-label">${dayLabel(k)}</div>
+          <div class="day-date">${dayKeyToDDMM(k)}</div>
+          <div class="day-count">${entries.length}</div>
+          <div class="day-total">${fmt(total)} €</div>
+          <div class="day-toggle"><i class="ti ti-chevron-down"></i></div>
         </div>
         ${isExpanded ? `
-          <div class="entry-group-items">
-            ${entries.map(e => (e.id === s.editingId && !editingInObligation) ? viewEntryEdit(e, cat) : viewEntryRow(e, cat)).join('')}
+          <div class="day-items">
+            ${entries.map(e => {
+              const cat = catById[e.category];
+              if (!cat) return '';
+              const inOb = cat.type === 'monthly' && s.expandedObligation === cat.id && e.id === s.editingId;
+              if (e.id === s.editingId && !inOb) return viewEntryEdit(e, cat);
+              return viewDayEntryRow(e, cat);
+            }).join('')}
           </div>
         ` : ''}
       </div>
@@ -974,7 +1477,22 @@ function viewEntries(s) {
       Записи
       <span class="count">${monthly.length}</span>
     </div>
-    <div>${groups}</div>
+    ${daysHtml}
+  `;
+}
+
+function viewDayEntryRow(e, cat) {
+  return `
+    <div class="entry day-entry" style="--cat-color: ${cat.color}">
+      <div class="entry-icon"><i class="ti ${cat.icon}"></i></div>
+      <div class="entry-main">
+        <div class="entry-cat-line">${escapeHtml(cat.label)}</div>
+        ${e.note ? `<div class="entry-note">${escapeHtml(e.note)}</div>` : ''}
+      </div>
+      <div class="entry-amount">${fmt(e.amount)} €</div>
+      <button class="entry-edit-btn" data-action="edit-entry" data-id="${e.id}" title="Редактирай" aria-label="Редактирай"><i class="ti ti-pencil"></i></button>
+      <button class="entry-delete" data-action="delete-entry" data-id="${e.id}" title="Изтрий" aria-label="Изтрий"><i class="ti ti-x"></i></button>
+    </div>
   `;
 }
 
@@ -994,9 +1512,7 @@ function viewEntryRow(e, cat) {
 
 function viewEntryEdit(e, cat) {
   const dateForInput = e.date.slice(0, 10);
-  const catOptions = getCategories().map(c =>
-    `<option value="${c.id}"${c.id === e.category ? ' selected' : ''}>${escapeHtml(c.label)}</option>`
-  ).join('');
+  const catOptions = categoryOptionsGrouped(e.category);
   return `
     <div class="entry editing" data-edit-row="${e.id}" style="--cat-color: ${cat.color}">
       <div class="entry-edit-form">
@@ -1020,9 +1536,12 @@ function viewEntryEdit(e, cat) {
 function viewSettingsPanel(s) {
   if (!s.settingsOpen) return '';
   const cats = getCategories();
-  const rows = cats.map(cat => {
+  const monthlyCats = cats.filter(c => c.type === 'monthly');
+  const dailyCats = cats.filter(c => c.type !== 'monthly');
+
+  const renderRow = (cat) => {
     const isCustom = !DEFAULT_IDS.has(cat.id);
-    if (isCustom && s.confirmDeleteCat === cat.id) {
+    if (s.confirmDeleteCat === cat.id) {
       const usedCount = state.expenses.filter(e => e.category === cat.id).length;
       const tail = usedCount === 0 ? '' :
         ` и ${usedCount} ${usedCount === 1 ? 'запис' : 'записа'}`;
@@ -1039,21 +1558,67 @@ function viewSettingsPanel(s) {
       `;
     }
     const isMonthly = cat.type === 'monthly';
+    const isEditingStyle = s.stylingCatId === cat.id;
     const deadlineVal = isMonthly ? cat.deadline ?? '' : '';
     const expectedVal = isMonthly && typeof cat.expected === 'number' ? cat.expected : '';
+    // ALL icons are now clickable (defaults too)
+    const iconCell = `<button class="cat-row-icon-btn${isEditingStyle ? ' active' : ''}" data-action="open-style-edit" data-cat="${cat.id}" style="--cat-color: ${cat.color}" title="Промени иконка и цвят"><i class="ti ${cat.icon}"></i></button>`;
+    // ALL rows now have a delete button
+    const deleteCell = `<button class="row-delete" data-action="arm-cat-delete" data-cat="${cat.id}" title="Изтрий категория" aria-label="Изтрий категория"><i class="ti ti-x"></i></button>`;
+
+    let row;
+    if (isMonthly) {
+      row = `
+        <div class="settings-row" data-cat-id="${cat.id}" style="--cat-color: ${cat.color}">
+          <i class="ti ti-drag-vertical drag-handle" aria-label="Премести"></i>
+          ${iconCell}
+          <input type="text" data-edit="label" data-cat="${cat.id}" value="${escapeHtml(cat.label)}" maxlength="30" data-keep-focus="lbl-${cat.id}">
+          <input type="number" class="row-num-input is-monthly" data-edit="deadline" data-cat="${cat.id}" value="${deadlineVal}" min="1" max="31" placeholder="—" title="Ден от месеца (1-31). Изтрий за да я направиш дневна." data-keep-focus="ddl-${cat.id}">
+          <input type="number" class="row-num-input" data-edit="expected" data-cat="${cat.id}" value="${expectedVal}" min="0" step="0.01" placeholder="—" title="Очаквана месечна сума (по избор)" data-keep-focus="exp-${cat.id}">
+          ${deleteCell}
+        </div>
+      `;
+    } else {
+      // Daily row — simplified, no day/expected boxes
+      row = `
+        <div class="settings-row settings-row-daily" data-cat-id="${cat.id}" style="--cat-color: ${cat.color}">
+          <i class="ti ti-drag-vertical drag-handle" aria-label="Премести"></i>
+          ${iconCell}
+          <input type="text" data-edit="label" data-cat="${cat.id}" value="${escapeHtml(cat.label)}" maxlength="30" data-keep-focus="lbl-${cat.id}">
+          <button class="row-promote" data-action="promote-to-monthly" data-cat="${cat.id}" title="Направи я месечна (с падеж)"><i class="ti ti-arrow-up"></i></button>
+          ${deleteCell}
+        </div>
+      `;
+    }
+    return row + (isEditingStyle ? viewCatStyleEditor(cat) : '');
+  };
+
+  const renderSection = (key, label, list) => {
+    if (!list.length) return '';
+    const collapsed = s.collapsedSettingsSections.has(key);
     return `
-      <div class="settings-row" data-cat-id="${cat.id}" style="--cat-color: ${cat.color}">
-        <i class="ti ti-drag-vertical drag-handle" aria-label="Премести"></i>
-        <i class="ti ${cat.icon} cat-row-icon"></i>
-        <input type="text" data-edit="label" data-cat="${cat.id}" value="${escapeHtml(cat.label)}" maxlength="30" data-keep-focus="lbl-${cat.id}">
-        <input type="number" class="row-num-input${isMonthly ? ' is-monthly' : ''}" data-edit="deadline" data-cat="${cat.id}" value="${deadlineVal}" min="1" max="31" placeholder="—" title="Месечна категория: ден от месеца (1-31). Празно = дневна." data-keep-focus="ddl-${cat.id}">
-        <input type="number" class="row-num-input" data-edit="expected" data-cat="${cat.id}" value="${expectedVal}" min="0" step="0.01" placeholder="—" title="Очаквана месечна сума (по избор)" data-keep-focus="exp-${cat.id}">
-        ${isCustom
-          ? `<button class="row-delete" data-action="arm-cat-delete" data-cat="${cat.id}" title="Изтрий категория" aria-label="Изтрий категория"><i class="ti ti-x"></i></button>`
-          : `<div class="row-spacer"></div>`}
+      <div class="cat-section${!collapsed ? ' expanded' : ''}">
+        <div class="cat-section-header" data-action="toggle-cat-section" data-section="${key}">
+          <div class="cat-section-label">${label}</div>
+          <div class="cat-section-count">${list.length}</div>
+          <div class="cat-section-toggle"><i class="ti ti-chevron-down"></i></div>
+        </div>
+        ${!collapsed ? `
+          <div class="cat-section-content">
+            ${key === 'monthly' ? `
+              <div class="settings-col-labels">
+                <div></div><div></div><div></div>
+                <div>Ден</div><div>Сума €</div><div></div>
+              </div>
+            ` : ''}
+            <div class="settings-list" id="settings-list-${key}">
+              ${list.map(renderRow).join('')}
+            </div>
+          </div>
+        ` : ''}
       </div>
     `;
-  }).join('');
+  };
 
   return `
     <div class="settings-panel">
@@ -1061,15 +1626,12 @@ function viewSettingsPanel(s) {
         Категории
         <span class="hint">Запазва автоматично</span>
       </div>
-      <div class="settings-col-labels">
-        <div></div><div></div><div></div>
-        <div>Ден</div><div>Сума €</div><div></div>
-      </div>
-      <div class="settings-list" id="settings-list">${rows}</div>
+      ${renderSection('monthly', 'Месечни', monthlyCats)}
+      ${renderSection('daily', 'Дневни', dailyCats)}
       <div class="new-cat-card">${viewNewCatForm(s)}</div>
       <div class="settings-actions">
         <button data-action="reset-labels" class="${s.armedReset ? 'armed' : ''}">
-          ${s.armedReset ? '<i class="ti ti-check"></i> Натисни пак за потвърждение' : '<i class="ti ti-refresh"></i> Възстанови оригиналните имена'}
+          ${s.armedReset ? '<i class="ti ti-check"></i> Натисни пак за потвърждение' : '<i class="ti ti-refresh"></i> Възстанови стандартните'}
         </button>
         <button data-action="close-settings"><i class="ti ti-check"></i> Готово</button>
       </div>
@@ -1086,6 +1648,19 @@ function viewNewCatForm(s) {
         <div class="preview-name${s.newCatName ? '' : ' placeholder'}">${s.newCatName ? escapeHtml(s.newCatName) : 'Така ще изглежда категорията'}</div>
       </div>
       <input type="text" id="new-cat-name" class="new-cat-name" placeholder="Име на категорията" maxlength="30" value="${escapeHtml(s.newCatName)}" data-keep-focus="newcatname">
+      <div class="new-cat-type-row">
+        <label class="type-radio${s.newCatType === 'daily' ? ' selected' : ''}">
+          <input type="radio" name="new-cat-type" value="daily" ${s.newCatType === 'daily' ? 'checked' : ''} data-action="set-newcat-type">
+          <span>Дневна</span>
+        </label>
+        <label class="type-radio${s.newCatType === 'monthly' ? ' selected' : ''}">
+          <input type="radio" name="new-cat-type" value="monthly" ${s.newCatType === 'monthly' ? 'checked' : ''} data-action="set-newcat-type">
+          <span>Месечна с падеж</span>
+        </label>
+        ${s.newCatType === 'monthly' ? `
+          <input type="number" id="new-cat-day" class="new-cat-day" min="1" max="31" placeholder="ден" value="${s.newCatDay || ''}" data-keep-focus="newcatday">
+        ` : ''}
+      </div>
       <div class="picker-group">
         <div class="picker-label">Икона — кликни, за да избереш</div>
         <div class="icon-picker">
@@ -1117,6 +1692,7 @@ function viewFooter(s) {
       <button data-action="toggle-settings"><i class="ti ti-category"></i> Категории</button>
       <button data-action="export-csv"><i class="ti ti-download"></i> Експорт CSV</button>
       <button data-action="export-all"><i class="ti ti-download"></i> Резервно копие</button>
+      <button data-action="import-backup"><i class="ti ti-refresh"></i> Импорт</button>
       <button data-action="clear-month" class="${s.armedClear ? 'armed' : ''}">
         ${s.armedClear ? `<i class="ti ti-trash"></i> Натисни пак — ${armedClearText}` : '<i class="ti ti-trash"></i> Изчисти месеца'}
       </button>
@@ -1174,27 +1750,35 @@ function renderToast(s) {
     t.classList.remove('show');
     return;
   }
+  const hasUndo = !!s.recentlyDeleted.entries;
   t.innerHTML = `
     <span>${escapeHtml(s.recentlyDeleted.message)}</span>
-    <button data-action="undo-delete"><i class="ti ti-undo"></i> Възстанови</button>
+    ${hasUndo ? `<button data-action="undo-delete"><i class="ti ti-undo"></i> Възстанови</button>` : ''}
   `;
   t.classList.add('show');
 }
 
 function initSortable() {
-  const list = $('settings-list');
-  if (state.sortable) { state.sortable.destroy(); state.sortable = null; }
-  if (list && window.Sortable) {
-    state.sortable = Sortable.create(list, {
+  // Destroy existing instances
+  state.sortableInstances.forEach(s => { try { s.destroy(); } catch (e) {} });
+  state.sortableInstances = [];
+
+  if (!window.Sortable) return;
+
+  ['monthly', 'daily'].forEach(key => {
+    const list = $('settings-list-' + key);
+    if (!list) return;
+    const inst = Sortable.create(list, {
       handle: '.drag-handle',
       animation: 200,
       ghostClass: 'sortable-ghost',
       chosenClass: 'sortable-chosen',
       dragClass: 'sortable-drag',
-      filter: '.confirming',
+      filter: '.confirming, .cat-style-editor',
       onEnd: handleReorder
     });
-  }
+    state.sortableInstances.push(inst);
+  });
 }
 
 // ============================================================
@@ -1204,26 +1788,49 @@ async function handleAdd() {
   const amountInput = $('add-amount');
   const catInput = $('add-category');
   const noteInput = $('add-note');
+  const dateInput = $('add-date');
   const amount = parseFloat(amountInput.value);
   if (!amount || amount <= 0) { amountInput.focus(); return; }
+  if (!catInput.value) { catInput.focus(); return; }
+
+  // Build the date: use the picked date if provided + current time for proper intra-day ordering
+  let dateISO;
+  if (dateInput && dateInput.value) {
+    const [y, m, d] = dateInput.value.split('-').map(Number);
+    const now = new Date();
+    const picked = new Date(y, m - 1, d, now.getHours(), now.getMinutes(), now.getSeconds());
+    dateISO = picked.toISOString();
+  } else if (isViewingCurrentMonth()) {
+    dateISO = new Date().toISOString();
+  } else {
+    dateISO = new Date(state.view.year, state.view.month, 1).toISOString();
+  }
 
   const expense = {
     id: uid(),
     amount: Math.round(amount * 100) / 100,
     category: catInput.value,
     note: noteInput.value.trim(),
-    date: isViewingCurrentMonth() ? new Date().toISOString() : new Date(state.view.year, state.view.month, 1).toISOString()
+    date: dateISO
   };
   state.expenses.push(expense);
+  // Auto-expand the day this entry belongs to
+  state.expandedDays.add(dayKey(new Date(dateISO)));
   await saveNow('expenses', state.expenses);
   amountInput.value = '';
   noteInput.value = '';
+  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
   render();
-  setTimeout(() => $('add-amount')?.focus(), 50);
+  setTimeout(() => {
+    $('add-amount')?.focus();
+    suggestAmountFromCategory();
+  }, 50);
 }
 
 function handleEditEntry(target) {
   state.editingId = target.dataset.id;
+  const exp = state.expenses.find(e => e.id === state.editingId);
+  if (exp) state.expandedDays.add(dayKey(new Date(exp.date)));
   render();
 }
 
@@ -1324,10 +1931,93 @@ function handleToggleObligation(target) {
   render();
 }
 
-function handleToggleGroup(target) {
+function handleSetFilter(target) {
+  state.addFilter = target.dataset.filter;
+  render();
+  // After re-render, try to suggest amount based on newly-selected first option
+  setTimeout(suggestAmountFromCategory, 0);
+}
+
+function suggestAmountFromCategory() {
+  const amountInput = $('add-amount');
+  const select = $('add-category');
+  if (!amountInput || !select || amountInput.value) return; // only fill if empty
+  const cat = getCategory(select.value);
+  if (cat && cat.type === 'monthly' && typeof cat.expected === 'number' && cat.expected > 0) {
+    amountInput.value = cat.expected;
+  }
+}
+
+function handleToggleDay(target) {
+  const k = target.dataset.day;
+  if (state.expandedDays.has(k)) state.expandedDays.delete(k);
+  else state.expandedDays.add(k);
+  render();
+}
+
+function handleToggleObligations() {
+  state.obligationsCollapsed = !state.obligationsCollapsed;
+  render();
+}
+
+function handleToggleCatSection(target) {
+  const key = target.dataset.section;
+  if (state.collapsedSettingsSections.has(key)) state.collapsedSettingsSections.delete(key);
+  else state.collapsedSettingsSections.add(key);
+  render();
+}
+
+function handleOpenStyleEdit(target) {
   const id = target.dataset.cat;
-  if (state.expandedGroups.has(id)) state.expandedGroups.delete(id);
-  else state.expandedGroups.add(id);
+  state.stylingCatId = (state.stylingCatId === id) ? null : id;
+  render();
+}
+
+function handleCloseStyleEdit() {
+  state.stylingCatId = null;
+  render();
+}
+
+function handleSetCatIcon(target) {
+  const id = target.dataset.cat;
+  const icon = target.dataset.icon;
+  if (DEFAULT_IDS.has(id)) {
+    state.categoryStyles[id] = state.categoryStyles[id] || {};
+    state.categoryStyles[id].icon = icon;
+    scheduleSave('category_styles', state.categoryStyles);
+  } else {
+    const cat = state.customCategories.find(c => c.id === id);
+    if (!cat) return;
+    cat.icon = icon;
+    scheduleSave('custom_categories', state.customCategories);
+  }
+  render();
+}
+
+function handleSetCatColor(target) {
+  const id = target.dataset.cat;
+  const color = target.dataset.color;
+  if (DEFAULT_IDS.has(id)) {
+    state.categoryStyles[id] = state.categoryStyles[id] || {};
+    state.categoryStyles[id].color = color;
+    scheduleSave('category_styles', state.categoryStyles);
+  } else {
+    const cat = state.customCategories.find(c => c.id === id);
+    if (!cat) return;
+    cat.color = color;
+    scheduleSave('custom_categories', state.customCategories);
+  }
+  render();
+}
+
+async function handlePromoteToMonthly(target) {
+  const id = target.dataset.cat;
+  // Make this category monthly with a default day. User can edit the day after.
+  state.categoryTypes[id] = state.categoryTypes[id] || {};
+  state.categoryTypes[id].type = 'monthly';
+  state.categoryTypes[id].deadline = 1;
+  await saveNow('category_types', state.categoryTypes);
+  showInfoToast(`Категорията е сега месечна с падеж 1-во число. Промени деня горе.`);
   render();
 }
 
@@ -1425,19 +2115,26 @@ function handleCancelCatDelete() {
 
 async function handleConfirmCatDelete(target) {
   const id = target.dataset.cat;
-  const removedEntries = state.expenses.filter(e => e.category === id);
+  const isDefault = DEFAULT_IDS.has(id);
   state.expenses = state.expenses.filter(e => e.category !== id);
-  state.customCategories = state.customCategories.filter(c => c.id !== id);
   state.categoryOrder = state.categoryOrder.filter(x => x !== id);
   delete state.customLabels[id];
   delete state.categoryTypes[id];
+  delete state.categoryStyles[id];
+  if (isDefault) {
+    state.deletedDefaults.add(id);
+  } else {
+    state.customCategories = state.customCategories.filter(c => c.id !== id);
+  }
   state.confirmDeleteCat = null;
   await Promise.all([
     saveNow('expenses', state.expenses),
     saveNow('custom_categories', state.customCategories),
     saveNow('category_order', state.categoryOrder),
     saveNow('category_labels', state.customLabels),
-    saveNow('category_types', state.categoryTypes)
+    saveNow('category_types', state.categoryTypes),
+    saveNow('category_styles', state.categoryStyles),
+    saveNow('deleted_defaults', Array.from(state.deletedDefaults))
   ]);
   render();
 }
@@ -1447,7 +2144,13 @@ function handleResetLabels() {
     clearTimeout(state.armedResetTimer);
     state.armedReset = false;
     state.customLabels = {};
-    saveNow('category_labels', state.customLabels).then(render);
+    state.categoryStyles = {};
+    state.deletedDefaults = new Set();
+    Promise.all([
+      saveNow('category_labels', state.customLabels),
+      saveNow('category_styles', state.categoryStyles),
+      saveNow('deleted_defaults', [])
+    ]).then(render);
     render();
     return;
   }
@@ -1477,23 +2180,48 @@ function handleClearMonth() {
 
 function handlePickIcon(target) { state.newCatIcon = target.dataset.icon; render(); }
 function handlePickColor(target) { state.newCatColor = target.dataset.color; render(); }
+function handleSetNewCatType(target) {
+  state.newCatType = target.value;
+  render();
+}
 
 async function handleAddCat() {
   const input = $('new-cat-name');
   const name = input ? input.value.trim() : state.newCatName.trim();
   if (!name) { input?.focus(); return; }
+  const dayInput = $('new-cat-day');
   const id = 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-  state.customCategories.push({ id, label: name, icon: state.newCatIcon, color: state.newCatColor, type: 'daily' });
+  const isMonthly = state.newCatType === 'monthly';
+  let day = null;
+  if (isMonthly) {
+    const raw = dayInput?.value ?? state.newCatDay;
+    day = parseInt(raw, 10);
+    if (isNaN(day) || day < 1) day = 1;
+    if (day > 31) day = 31;
+  }
+  const cat = {
+    id, label: name,
+    icon: state.newCatIcon, color: state.newCatColor,
+    type: isMonthly ? 'monthly' : 'daily'
+  };
+  if (isMonthly) cat.deadline = day;
+  state.customCategories.push(cat);
   state.newCatName = '';
+  state.newCatDay = '';
   await saveNow('custom_categories', state.customCategories);
   render();
 }
 
 async function handleReorder() {
-  const list = $('settings-list');
-  if (!list) return;
-  const rows = list.querySelectorAll('.settings-row[data-cat-id]');
-  state.categoryOrder = Array.from(rows).map(r => r.dataset.catId);
+  const monthlyList = $('settings-list-monthly');
+  const dailyList = $('settings-list-daily');
+  const monthlyIds = monthlyList ? Array.from(monthlyList.querySelectorAll('.settings-row[data-cat-id]')).map(r => r.dataset.catId) : [];
+  const dailyIds = dailyList ? Array.from(dailyList.querySelectorAll('.settings-row[data-cat-id]')).map(r => r.dataset.catId) : [];
+  const merged = [...monthlyIds, ...dailyIds];
+  // Preserve any IDs not visible in either list (defensive — shouldn't happen, but keeps data intact)
+  const visible = new Set(merged);
+  const others = state.categoryOrder.filter(id => !visible.has(id));
+  state.categoryOrder = [...merged, ...others];
   await saveNow('category_order', state.categoryOrder);
   render();
 }
@@ -1517,16 +2245,72 @@ function handleExportCSV() {
 
 function handleExportAll() {
   const backup = {
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     expenses: state.expenses,
     customLabels: state.customLabels,
     customCategories: state.customCategories,
     categoryTypes: state.categoryTypes,
-    categoryOrder: state.categoryOrder
+    categoryOrder: state.categoryOrder,
+    categoryStyles: state.categoryStyles,
+    deletedDefaults: Array.from(state.deletedDefaults)
   };
   const date = new Date().toISOString().slice(0, 10);
   downloadFile(`razhodi_backup_${date}.json`, JSON.stringify(backup, null, 2), 'application/json');
+}
+
+function handleImportBackup() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json,.json';
+  input.onchange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!data || typeof data !== 'object') throw new Error('Файлът не е валиден JSON обект');
+
+      const counts = {
+        expenses: Array.isArray(data.expenses) ? data.expenses.length : 0,
+        customs: Array.isArray(data.customCategories) ? data.customCategories.length : 0
+      };
+
+      if (Array.isArray(data.expenses)) state.expenses = data.expenses;
+      if (data.customLabels && typeof data.customLabels === 'object') state.customLabels = data.customLabels;
+      if (Array.isArray(data.customCategories)) state.customCategories = data.customCategories;
+      if (data.categoryTypes && typeof data.categoryTypes === 'object') state.categoryTypes = data.categoryTypes;
+      if (Array.isArray(data.categoryOrder)) state.categoryOrder = data.categoryOrder;
+      if (data.categoryStyles && typeof data.categoryStyles === 'object') state.categoryStyles = data.categoryStyles;
+      if (Array.isArray(data.deletedDefaults)) state.deletedDefaults = new Set(data.deletedDefaults);
+
+      await Promise.all([
+        saveNow('expenses', state.expenses),
+        saveNow('category_labels', state.customLabels),
+        saveNow('custom_categories', state.customCategories),
+        saveNow('category_types', state.categoryTypes),
+        saveNow('category_order', state.categoryOrder),
+        saveNow('category_styles', state.categoryStyles),
+        saveNow('deleted_defaults', Array.from(state.deletedDefaults))
+      ]);
+
+      showInfoToast(`Импортирано: ${counts.expenses} ${counts.expenses === 1 ? 'запис' : 'записа'}, ${counts.customs} ${counts.customs === 1 ? 'собствена категория' : 'собствени категории'}`);
+      render();
+    } catch (err) {
+      showInfoToast(`Грешка при импорт: ${err.message}`);
+      render();
+    }
+  };
+  input.click();
+}
+
+function showInfoToast(message, durationMs = 4500) {
+  if (state.recentlyDeleted && state.recentlyDeleted.timer) clearTimeout(state.recentlyDeleted.timer);
+  state.recentlyDeleted = {
+    entries: null,
+    message,
+    timer: setTimeout(() => { state.recentlyDeleted = null; render(); }, durationMs)
+  };
 }
 
 function downloadFile(filename, content, type) {
@@ -1551,7 +2335,15 @@ const Actions = {
   'cancel-edit':        handleCancelEdit,
   'quick-pay':          handleQuickPay,
   'toggle-obligation':  handleToggleObligation,
-  'toggle-group':       handleToggleGroup,
+  'toggle-obligations': handleToggleObligations,
+  'set-filter':         handleSetFilter,
+  'toggle-day':         handleToggleDay,
+  'toggle-cat-section': handleToggleCatSection,
+  'open-style-edit':    handleOpenStyleEdit,
+  'close-style-edit':   handleCloseStyleEdit,
+  'set-cat-icon':       handleSetCatIcon,
+  'set-cat-color':      handleSetCatColor,
+  'promote-to-monthly': handlePromoteToMonthly,
   'toggle-settings':    handleToggleSettings,
   'close-settings':     handleCloseSettings,
   'arm-cat-delete':     handleArmCatDelete,
@@ -1564,6 +2356,7 @@ const Actions = {
   'add-cat':            handleAddCat,
   'export-csv':         handleExportCSV,
   'export-all':         handleExportAll,
+  'import-backup':      handleImportBackup,
   'undo-delete':        handleUndoDelete
 };
 
@@ -1576,6 +2369,16 @@ document.addEventListener('click', (e) => {
   if (t.dataset.action === 'toggle-group' && e.target.closest('button')) return;
   const handler = Actions[t.dataset.action];
   if (handler) handler(t, e);
+});
+
+// Auto-suggest amount when monthly category is picked
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.id === 'add-category') {
+    suggestAmountFromCategory();
+  }
+  if (e.target && e.target.name === 'new-cat-type') {
+    handleSetNewCatType(e.target);
+  }
 });
 
 // Settings input changes (label, deadline, expected) — listen on blur and Enter
@@ -1632,6 +2435,9 @@ document.addEventListener('input', (e) => {
       }
     }
   }
+  if (t && t.id === 'new-cat-day') {
+    state.newCatDay = t.value;
+  }
 });
 
 // ============================================================
@@ -1641,20 +2447,30 @@ async function init() {
   const now = new Date();
   state.view.year = now.getFullYear();
   state.view.month = now.getMonth();
+  state.expandedDays.add(dayKey(now));
 
-  const [expenses, labels, customs, types, order] = await Promise.all([
-    Storage.get('expenses'),
-    Storage.get('category_labels'),
-    Storage.get('custom_categories'),
-    Storage.get('category_types'),
-    Storage.get('category_order')
-  ]);
+  try {
+    const [expenses, labels, customs, types, order, styles, deletedDef] = await Promise.all([
+      Storage.get('expenses'),
+      Storage.get('category_labels'),
+      Storage.get('custom_categories'),
+      Storage.get('category_types'),
+      Storage.get('category_order'),
+      Storage.get('category_styles'),
+      Storage.get('deleted_defaults')
+    ]);
 
-  state.expenses = Array.isArray(expenses) ? expenses : [];
-  state.customLabels = labels && typeof labels === 'object' ? labels : {};
-  state.customCategories = Array.isArray(customs) ? customs : [];
-  state.categoryTypes = types && typeof types === 'object' ? types : {};
-  state.categoryOrder = Array.isArray(order) ? order : [];
+    state.expenses = Array.isArray(expenses) ? expenses : [];
+    state.customLabels = labels && typeof labels === 'object' ? labels : {};
+    state.customCategories = Array.isArray(customs) ? customs : [];
+    state.categoryTypes = types && typeof types === 'object' ? types : {};
+    state.categoryOrder = Array.isArray(order) ? order : [];
+    state.categoryStyles = styles && typeof styles === 'object' ? styles : {};
+    state.deletedDefaults = new Set(Array.isArray(deletedDef) ? deletedDef : []);
+  } catch (e) {
+    console.error('Init storage load failed:', e);
+    // Continue with empty state - render() will still work
+  }
 
   render();
 }
