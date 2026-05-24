@@ -3,7 +3,7 @@
   "short_name": "Разходи",
   "description": "Личен тракер за месечни разходи",
   "lang": "bg",
-  "start_url": "./mesechni_razhodi.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#F7F3EC",
